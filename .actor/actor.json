@@ -1,9 +1,15 @@
 {
-  "actorSpecification": 1,
-  "name": "hotel-size-scraper",
+  "title": "Hotel Scraper Actor",
+  "description": "Scrapes hotel room counts from Expedia hotel pages.",
   "version": "0.1",
   "buildTag": "latest",
-  "defaultRunOptions": {
-    "build": "latest"
+  "entryPoint": "main.js",
+  "actorSpecification": 1,
+  "meta": {
+    "origin": "github"
+  },
+  "dependencies": {
+    "crawlee": "^3.6.0",
+    "apify": "^3.0.0"
   }
 }
