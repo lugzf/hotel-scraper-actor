@@ -1,0 +1,8 @@
+{
+  "buildTag": "latest",
+  "name": "hotel-size-scraper",
+  "version": "0.1",
+  "defaultRunOptions": {
+    "build": "latest"
+  }
+}
