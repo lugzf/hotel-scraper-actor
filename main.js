@@ -1,6 +1,13 @@
-import { PlaywrightCrawler, log, Dataset } from 'crawlee';
+import { log, Dataset, PlaywrightCrawler } from 'crawlee';
+import fs from 'fs/promises';
 
-const input = await JSON.parse(process.env.INPUT || '{"startUrls": []}');
+// Tenta usar input da Apify (via env var), senão cai no arquivo local
+let input;
+try {
+    input = JSON.parse(process.env.INPUT);
+} catch {
+    input = JSON.parse(await fs.readFile('./INPUT.json', 'utf-8'));
+}
 
 const crawler = new PlaywrightCrawler({
     requestHandlerTimeoutSecs: 60,
