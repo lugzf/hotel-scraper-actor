@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "hotel-scraper-actor",
   "title": "Hotel Scraper Actor",
-  "description": "Coleta informações de hotéis no Expedia usando Crawlee com Playwright.",
+  "description": "Coleta informações de hotéis no Expedia usando Crawlee ou Apify.",
   "version": "0.1",
   "buildTag": "latest",
   "env": {
