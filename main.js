@@ -1,30 +1,33 @@
 import { PlaywrightCrawler, log, Dataset } from 'crawlee';
 
-// Lê os dados de entrada fornecidos na interface ou via API
-const input = JSON.parse(process.env.INPUT || '{"startUrls": []}');
+const input = await JSON.parse(process.env.INPUT || '{"startUrls": []}');
 
 const crawler = new PlaywrightCrawler({
-    // Limita para evitar bloqueios por excesso de requisições simultâneas
-    minConcurrency: 1,
-    maxConcurrency: 1,
     requestHandlerTimeoutSecs: 60,
+    maxConcurrency: 1, // Evita acessos simultâneos
+    minConcurrency: 1,
+    maxRequestRetries: 3,
+    retryOnBlocked: true,
+    retryOnNetworkError: true,
+
+    preNavigationHooks: [
+        async () => {
+            const delay = Math.floor(Math.random() * 5000) + 3000; // 3 a 8 segundos
+            log.info(`Aguardando ${delay}ms antes da navegação para evitar bloqueio...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    ],
 
     async requestHandler({ page, request }) {
         log.info(`Abrindo página: ${request.url}`);
 
-        // Scroll para carregar elementos lazy-loaded
         await autoScroll(page);
-
-        // Delay aleatório entre 2 e 5 segundos
-        await page.waitForTimeout(Math.random() * 3000 + 2000);
+        await page.waitForTimeout(3000);
 
         const content = await page.content();
-
-        // Captura padrão de quartos, ex: "23 quartos"
         const match = content.match(/(\d+)\s+quartos?/i);
         const hotelSize = match ? match[0] : null;
 
-        // Salva dados no dataset do Apify
         await Dataset.pushData({
             url: request.url,
             hotelSize,
@@ -36,10 +39,8 @@ const crawler = new PlaywrightCrawler({
     }
 });
 
-// Inicia o crawler com as URLs fornecidas
 await crawler.run(input.startUrls);
 
-// Função para scroll infinito (carregar conteúdos dinamicamente)
 async function autoScroll(page) {
     await page.evaluate(async () => {
         await new Promise((resolve) => {
