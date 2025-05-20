@@ -1,15 +1,11 @@
 {
+  "name": "hotel-scraper-actor",
   "title": "Hotel Scraper Actor",
-  "description": "Scrapes hotel room counts from Expedia hotel pages.",
+  "description": "Coleta informações de hotéis no Expedia usando Crawlee com Playwright.",
   "version": "0.1",
   "buildTag": "latest",
-  "entryPoint": "main.js",
-  "actorSpecification": 1,
-  "meta": {
-    "origin": "github"
+  "env": {
+    "NODE_ENV": "production"
   },
-  "dependencies": {
-    "crawlee": "^3.6.0",
-    "apify": "^3.0.0"
-  }
+  "main": "main.js"
 }
