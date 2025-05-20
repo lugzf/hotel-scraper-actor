@@ -2,11 +2,9 @@
   "actorSpecification": 1,
   "name": "hotel-scraper-actor",
   "title": "Hotel Scraper Actor",
-  "description": "Coleta informações de hotéis no Expedia usando Crawlee ou Apify.",
+  "description": "Scrapes hotel data from Expedia hotel detail pages.",
   "version": "0.1",
-  "buildTag": "latest",
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "main": "main.js"
+  "environmentVariables": {},
+  "dockerfile": "./Dockerfile",
+  "input": "./input_schema.json"
 }
