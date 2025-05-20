@@ -1,4 +1,5 @@
 {
+  "actorSpecification": 1,
   "name": "hotel-scraper-actor",
   "title": "Hotel Scraper Actor",
   "description": "Coleta informações de hotéis no Expedia usando Crawlee com Playwright.",
