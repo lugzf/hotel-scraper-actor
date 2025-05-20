@@ -1,7 +1,8 @@
 {
-  "buildTag": "latest",
+  "actorSpecification": "1.0",
   "name": "hotel-size-scraper",
   "version": "0.1",
+  "buildTag": "latest",
   "defaultRunOptions": {
     "build": "latest"
   }
