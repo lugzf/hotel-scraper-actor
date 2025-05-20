@@ -1,23 +1,26 @@
 import { PlaywrightCrawler, log, Dataset } from 'crawlee';
 
+// Fallback se INPUT não for passado corretamente
 const input = await JSON.parse(process.env.INPUT || '{"startUrls": []}');
 
+// Configuração do crawler
 const crawler = new PlaywrightCrawler({
     requestHandlerTimeoutSecs: 60,
-    maxConcurrency: 1, // Evita acessos simultâneos
+    maxConcurrency: 1,         // reduz carga no servidor
     minConcurrency: 1,
     maxRequestRetries: 3,
-    retryOnBlocked: true,
-    retryOnNetworkError: true,
+    retryOnBlocked: true,      // reenvia requisições com erro 429
 
+    // Delay antes da navegação para evitar bloqueios por frequência
     preNavigationHooks: [
         async () => {
-            const delay = Math.floor(Math.random() * 5000) + 3000; // 3 a 8 segundos
-            log.info(`Aguardando ${delay}ms antes da navegação para evitar bloqueio...`);
+            const delay = Math.floor(Math.random() * 5000) + 3000; // 3s a 8s
+            log.info(`Aguardando ${delay}ms antes de continuar...`);
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     ],
 
+    // Tratamento das requisições bem-sucedidas
     async requestHandler({ page, request }) {
         log.info(`Abrindo página: ${request.url}`);
 
@@ -34,13 +37,16 @@ const crawler = new PlaywrightCrawler({
         });
     },
 
+    // Tratamento de falhas definitivas
     failedRequestHandler({ request }) {
         log.error(`Falha ao acessar ${request.url}`);
     }
 });
 
+// Executa com URLs de entrada
 await crawler.run(input.startUrls);
 
+// Função de scroll automático
 async function autoScroll(page) {
     await page.evaluate(async () => {
         await new Promise((resolve) => {
