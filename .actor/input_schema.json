@@ -6,21 +6,9 @@
   "properties": {
     "startUrls": {
       "title": "Start URLs",
+      "description": "URLs dos hotéis a serem processados",
       "type": "array",
-      "description": "Lista de URLs dos hotéis",
-      "editor": "requestListSources",
-      "items": {
-        "type": "object",
-        "title": "Start URL",
-        "required": ["url"],
-        "properties": {
-          "url": {
-            "title": "URL",
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      }
+      "editor": "requestListSources"
     }
   },
   "required": ["startUrls"]
