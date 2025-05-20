@@ -1,8 +1,12 @@
 {
-  "name": "hotel-scraper",
+  "name": "hotel-scraper-actor",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
   "dependencies": {
-    "crawlee": "^3.8.0"
+    "apify": "^3.0.0" // ou "crawlee": "^3.6.2" se for esse o pacote usado
   }
 }
+
