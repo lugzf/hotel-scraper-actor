@@ -1,0 +1,24 @@
+{
+  "title": "Hotel Scraper Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Lista de URLs dos hotéis para extrair o número de quartos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["url"]
+      }
+    }
+  },
+  "required": ["startUrls"]
+}
