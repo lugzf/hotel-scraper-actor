@@ -4,4 +4,5 @@ COPY --chown=myuser package*.json ./
 RUN npm install
 
 COPY --chown=myuser . ./
-CMD ["node", "src/main.js"]
+CMD ["node", "main.js"]
+
