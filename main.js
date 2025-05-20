@@ -2,7 +2,7 @@ import { PlaywrightCrawler, Dataset } from 'crawlee';
 import { setTimeout } from 'timers/promises';
 
 const startUrls = [
-    { url: 'https://www.expedia.com/Macapa-Hotels-AMAPA-HOTEL.h34629558.Hotel-Information?' },
+    { url: 'https://www.hoteis.com/ho1109145856/amapa-hotel-macapa-brasil/' },
     // Adicione outras URLs se desejar
 ];
 
