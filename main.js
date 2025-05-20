@@ -1,60 +1,33 @@
-import { PlaywrightCrawler, log, Dataset } from 'crawlee';
-import { Actor } from 'apify';
+import { PlaywrightCrawler, Dataset } from 'crawlee';
 
-await Actor.init();
-const input = await Actor.getInput();
+const startUrls = [
+    { url: 'https://www.expedia.com/Macapa-Hotels-AMAPA-HOTEL.h34629558.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Hotel-Do-Forte.h10412384.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Forte-Express.h38761841.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Royal-Hotel-Gastronomia.h36456999.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Frota-Palace-Hotel.h12670744.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-B-E-B.h108814946.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Hotel-Macapaba.h44232128.Hotel-Information?' },
+    { url: 'https://www.expedia.com/Macapa-Hotels-Hotel-Xenios.h36456857.Hotel-Information?' },
+];
 
 const crawler = new PlaywrightCrawler({
-    requestHandlerTimeoutSecs: 60,
-    maxConcurrency: 1,
-    minConcurrency: 1,
-    maxRequestRetries: 3,
-    retryOnBlocked: true,
-
-    preNavigationHooks: [
-        async () => {
-            const delay = Math.floor(Math.random() * 5000) + 3000;
-            log.info(`Aguardando ${delay}ms antes de continuar...`);
-            await new Promise(resolve => setTimeout(resolve, delay));
-        }
-    ],
-
-    async requestHandler({ page, request }) {
+    async requestHandler({ request, page, log }) {
         log.info(`Abrindo página: ${request.url}`);
-        await autoScroll(page);
-        await page.waitForTimeout(3000);
 
-        const content = await page.content();
-        const match = content.match(/(\d+)\s+quartos?/i);
-        const hotelSize = match ? match[0] : null;
+        const title = await page.title();
+        const hotelName = await page.locator('h1').first().textContent();
+        const address = await page.locator('[data-stid="content-hotel-address"]').first().textContent();
+        const rating = await page.locator('[data-stid="content-hotel-reviews-rating"]').first().textContent();
 
         await Dataset.pushData({
             url: request.url,
-            hotelSize,
+            title,
+            hotelName,
+            address,
+            rating,
         });
     },
-
-    failedRequestHandler({ request }) {
-        log.error(`Falha ao acessar ${request.url}`);
-    }
 });
 
-await crawler.run(input?.startUrls || []);
-await Actor.exit();
-
-async function autoScroll(page) {
-    await page.evaluate(async () => {
-        await new Promise((resolve) => {
-            let totalHeight = 0;
-            const distance = 100;
-            const timer = setInterval(() => {
-                window.scrollBy(0, distance);
-                totalHeight += distance;
-                if (totalHeight >= document.body.scrollHeight) {
-                    clearInterval(timer);
-                    resolve();
-                }
-            }, 100);
-        });
-    });
-}
+await crawler.run(startUrls);
