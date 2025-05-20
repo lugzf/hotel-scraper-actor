@@ -1,15 +1,7 @@
 {
-  "title": "Hotel Scraper Input",
-  "description": "Lista de URLs dos hotéis para extração de dados",
+  "title": "Hotel Scraper Input Schema",
   "type": "object",
   "schemaVersion": 1,
-  "properties": {
-    "startUrls": {
-      "title": "Start URLs",
-      "description": "URLs dos hotéis a serem processados",
-      "type": "array",
-      "editor": "requestListSources"
-    }
-  },
-  "required": ["startUrls"]
+  "properties": {},
+  "required": []
 }
