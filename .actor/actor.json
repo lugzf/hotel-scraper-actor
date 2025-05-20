@@ -1,5 +1,5 @@
 {
-  "actorSpecification": "1.0",
+  "actorSpecification": 1,
   "name": "hotel-size-scraper",
   "version": "0.1",
   "buildTag": "latest",
