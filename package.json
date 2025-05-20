@@ -6,7 +6,7 @@
     "start": "node main.js"
   },
   "dependencies": {
-    "apify": "^3.0.0" // ou "crawlee": "^3.6.2" se for esse o pacote usado
+    "apify": "^3.0.0"
   }
 }
 
