@@ -1,32 +1,32 @@
-import { PlaywrightCrawler, log, Dataset } from 'crawlee';
+import { PlaywrightCrawler, Actor } from 'crawlee';
 
-const input = await JSON.parse(process.env.INPUT || '{"startUrls": []}');
+await Actor.init();
+
+const input = await Actor.getInput() || { startUrls: [] };
 
 const crawler = new PlaywrightCrawler({
     requestHandlerTimeoutSecs: 60,
 
-    async requestHandler({ page, request }) {
+    async requestHandler({ page, request, log, pushData }) {
         log.info(`Abrindo página: ${request.url}`);
-
         await autoScroll(page);
         await page.waitForTimeout(3000);
-
         const content = await page.content();
         const match = content.match(/(\d+)\s+quartos?/i);
         const hotelSize = match ? match[0] : null;
-
-        await Dataset.pushData({
+        await pushData({
             url: request.url,
             hotelSize,
         });
     },
 
-    failedRequestHandler({ request }) {
+    failedRequestHandler({ request, log }) {
         log.error(`Falha ao acessar ${request.url}`);
     }
 });
 
 await crawler.run(input.startUrls);
+await Actor.exit();
 
 async function autoScroll(page) {
     await page.evaluate(async () => {
